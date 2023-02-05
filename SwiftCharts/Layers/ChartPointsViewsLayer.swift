@@ -68,7 +68,7 @@ open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> 
         }
     }
     
-    func addSubview(_ chart: Chart, view: UIView) {
+    open func addSubview(_ chart: Chart, view: UIView) {
         switch mode {
         case .scaleAndTranslate:
             chart.addSubview(view)
@@ -78,12 +78,11 @@ open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> 
                 chart.addSubviewNoTransformUnclipped(view)
             } else {
                 chart.addSubviewNoTransform(view)
-            }
-            
+            }  
         }
     }
     
-    func reloadViews() {
+    open func reloadViews() {
         guard let chart = chart else {return}
         
         for v in viewsWithChartPoints {
