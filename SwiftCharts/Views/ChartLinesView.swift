@@ -45,18 +45,6 @@ open class ChartLinesView: UIView {
     required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    fileprivate func createLineMask(frame: CGRect) -> CALayer {
-        let lineMaskLayer = CAShapeLayer()
-        var maskRect = frame
-        maskRect.origin.y = 0
-        maskRect.size.height = frame.size.height
-        let path = CGPath(rect: maskRect, transform: nil)
-        
-        lineMaskLayer.path = path
-        
-        return lineMaskLayer
-    }
 
     open func generateLayer(path: UIBezierPath) -> CAShapeLayer {
         let lineLayer = CAShapeLayer()
@@ -99,15 +87,20 @@ open class ChartLinesView: UIView {
     }
     
     fileprivate func addGradientForMultiColorLine(withLayer lineLayer: CAShapeLayer) {
-        if lineColors.count > 1 {
-            let gradientLayer = CAGradientLayer()
-            gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
-            gradientLayer.endPoint = CGPoint(x: 1.0, y: 0)
-            gradientLayer.frame = self.frame
-            gradientLayer.colors = lineColors.map({$0.cgColor})
-            gradientLayer.mask = lineLayer
-            layer.addSublayer(gradientLayer)
-        }
+        guard lineColors.count > 1 else { return }
+
+        let gradientLayer = createGradientLayer()
+        gradientLayer.mask = lineLayer
+        layer.addSublayer(gradientLayer)
+    }
+    
+    open func createGradientLayer() -> CAGradientLayer {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = lineColors.map({ $0.cgColor })
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 1.0, y: 0)
+        gradientLayer.frame = frame
+        return gradientLayer
     }
  }
 
