@@ -56,10 +56,14 @@ open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> 
     
     open func initViews(_ chart: Chart) {
         viewsWithChartPoints = generateChartPointViews(chartPointModels: chartPointsModels, chart: chart)
-        
+        addViews(to: chart)
+    }
+    
+    open func addViews(to chart: Chart) {
         if delayBetweenItems =~ 0 {
-            for v in viewsWithChartPoints {addSubview(chart, view: v.view)}
-            
+            for v in viewsWithChartPoints {
+                addSubview(chart, view: v.view)
+            }
         } else {
             for viewWithChartPoint in viewsWithChartPoints {
                 let view = viewWithChartPoint.view
@@ -78,7 +82,7 @@ open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> 
                 chart.addSubviewNoTransformUnclipped(view)
             } else {
                 chart.addSubviewNoTransform(view)
-            }  
+            }
         }
     }
     
